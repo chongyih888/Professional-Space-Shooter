@@ -14,9 +14,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] _powerups;
 
     private bool _stopSpawning = false;
-
-    // Start is called before the first frame update
-    void Start()
+    
+    public void StartSpawning()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
@@ -34,6 +33,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
+        yield return new WaitForSeconds(3.0f);
+
         //while loop (infinite loop)
            //Instantiate enemy prefab
            //yield wait for 5 seconds
@@ -50,6 +51,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine()
     {
+        yield return new WaitForSeconds(3.0f);
+
         //every 3-7 seconds spawn in a power up 
         while (_stopSpawning == false)
         {

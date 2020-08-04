@@ -34,9 +34,20 @@ public class Player : MonoBehaviour
     private GameObject _shieldvisualiser;
 
     [SerializeField]
+    private GameObject _rightEngine;
+    [SerializeField]
+    private GameObject _leftEngine;
+
+    [SerializeField]
     private int _score;
 
     private UIManager _uiManager;
+
+    //variable for audio
+    [SerializeField]
+    private AudioClip _laserSoundClip;
+    
+    private AudioSource _audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +56,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _audioSource = GetComponent<AudioSource>();
 
         if(_spawnManager == null)
         {
@@ -56,6 +68,14 @@ public class Player : MonoBehaviour
             Debug.LogError("The UI Manager is NULL.");
         }
         
+        if(_audioSource == null)
+        {
+            Debug.LogError("AudioSource on the player is NULL.");
+        }
+        else
+        {
+            _audioSource.clip = _laserSoundClip;
+        }
     }
 
     // Update is called once per frame
@@ -136,11 +156,14 @@ public class Player : MonoBehaviour
         }
         //if space key press, 
         //if tripleshot is true
-            //fire 3 lasers (triple shot prefab)
+        //fire 3 lasers (triple shot prefab)
 
         //else fire 1 laser
 
         //instantiate 3 lasers (triple shot prefab)
+
+        //play sound here
+        _audioSource.Play();
     }
 
     public void Damage()
@@ -160,6 +183,18 @@ public class Player : MonoBehaviour
         }
 
         _lives--;
+
+        //if lives is 2
+        //enable right engine
+        //else if lives is 1
+        //enable left engine
+        if(_lives == 2)
+        {
+            _leftEngine.SetActive(true);
+        }else if (_lives == 1)
+        {
+            _rightEngine.SetActive(true);
+        }
 
         _uiManager.UpdateLives(_lives);
 
